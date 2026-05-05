@@ -266,6 +266,68 @@ export const getMenuTabs = (): ForumOptions<Array<MenuTab>> => ({
       showOnCompressed: true,
     }
   ],
+  WorldDaemons: [
+    {
+      id: 'home',
+      title: 'Home',
+      link: '/',
+      iconComponent: Home,
+      tooltip: 'Recent posts and discussions across World Daemons.',
+      showOnMobileStandalone: true,
+      showOnCompressed: true,
+    }, {
+      id: 'allPosts',
+      title: 'All Posts',
+      link: '/allPosts',
+      iconComponent: Sort,
+      tooltip: 'See all posts, filtered and sorted by date, karma, and more.',
+      showOnMobileStandalone: false,
+      showOnCompressed: true,
+    }, {
+      id: 'wiki',
+      title: 'Wiki',
+      mobileTitle: 'Wiki',
+      link: getAllTagsPath(),
+      iconComponent: LocalOffer,
+      tooltip: 'Collaboratively edited Tags and Wiki Articles',
+      showOnMobileStandalone: true,
+      showOnCompressed: true,
+    }, {
+      id: 'community',
+      title: 'Community',
+      mobileTitle: 'Community',
+      link: getCommunityPath(),
+      iconComponent: SupervisedUserCircleIcon,
+      tooltip: 'Find your people.',
+      showOnMobileStandalone: true,
+      showOnCompressed: true,
+    }, {
+      id: 'divider',
+      divider: true,
+      showOnCompressed: true,
+    }, {
+      id: 'shortform',
+      title: 'Quick takes',
+      link: '/quicktakes',
+      subItem: true,
+    }, {
+      id: 'subscribeWidget',
+      customComponentName: "SubscribeWidget",
+    }, {
+      id: 'about',
+      title: 'About the Forum',
+      mobileTitle: 'About',
+      link: '/about',
+      subItem: true,
+      compressedIconComponent: AboutQuestionIcon,
+      showOnCompressed: true,
+    }, {
+      id: 'contact',
+      title: 'Contact Us',
+      link: '/contact',
+      subItem: true,
+    }
+  ],
   default: [
     {
       id: 'home',
