@@ -21693,6 +21693,7 @@ type signupMutationVariables = Exact<{
   abTestKey: InputMaybe<Scalars['String']['input']>;
   daemonName: InputMaybe<Scalars['String']['input']>;
   daemonSpecies: InputMaybe<Scalars['String']['input']>;
+  inviteCode: InputMaybe<Scalars['String']['input']>;
 }>;
 
 

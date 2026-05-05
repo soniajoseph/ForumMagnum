@@ -194,11 +194,11 @@ const LoginForm = ({ startingState = "login", returnTo }: {
     // rather than submitting. Validate credentials + invite code inline first.
     if (currentAction === 'signup' && wdMode && signupStep === 'credentials') {
       if (!email || !username || !password) {
-        showError({message: "Email, username and password are all required."});
+        showError({name: "ValidationError", message: "Email, username and password are all required."});
         return;
       }
       if (!inviteCode.trim()) {
-        showError({message: "An invite code is required."});
+        showError({name: "ValidationError", message: "An invite code is required."});
         return;
       }
       setDisplayedError(null);
