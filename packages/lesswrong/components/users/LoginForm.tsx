@@ -88,6 +88,14 @@ const styles = defineStyles('LoginForm', (theme: ThemeType) => ({
     '&:hover': {
       color: theme.palette.link.dim,
     }
+  },
+  daemonStepHeader: {
+    ...theme.typography.body2,
+    fontStyle: 'italic',
+    color: theme.palette.greyAlpha(0.7),
+    marginTop: 8,
+    marginBottom: 4,
+    textAlign: 'center',
   }
 }))
 
@@ -116,6 +124,11 @@ const LoginForm = ({ startingState = "login", returnTo }: {
   const [daemonSpecies, setDaemonSpecies] = useState<string>("")
   const { flash } = useMessages();
   const [currentAction, setCurrentAction] = useState<possibleActions>(startingState)
+  // For World Daemons, signup is a 2-step flow:
+  //   step 1 — email + username + password (the "credentials" step)
+  //   step 2 — daemon name + animal manifestation (the "daemon" step)
+  // For other forum types, signup is single-step.
+  const [signupStep, setSignupStep] = useState<"credentials"|"daemon">("credentials")
   const [subscribeToCurated, setSubscribeToCurated] = useState<boolean>(hasSubscribeToCuratedCheckbox)
   const [_, setCookie] = useCookies(["loginToken"]);
   const wdMode = isWorldDaemons();
@@ -173,6 +186,18 @@ const LoginForm = ({ startingState = "login", returnTo }: {
     e.preventDefault();
     const signupAbTestKey = getUserABTestKey({clientId});
 
+    // For World Daemons, the first signup click advances to the daemon step
+    // rather than submitting. Validate credentials inline first.
+    if (currentAction === 'signup' && wdMode && signupStep === 'credentials') {
+      if (!email || !username || !password) {
+        showError({message: "Email, username and password are all required."});
+        return;
+      }
+      setDisplayedError(null);
+      setSignupStep('daemon');
+      return;
+    }
+
     if (currentAction === 'login') {
       const { data, error } = await loginMutation({
         variables: { username, password }
@@ -222,8 +247,11 @@ const LoginForm = ({ startingState = "login", returnTo }: {
       <ReCaptcha verifyCallback={(token) => reCaptchaToken.current = token} action="login/signup"/>
     </DeferRender>}
     <form className={classes.root} onSubmit={submitFunction}>
-      {["signup", "pwReset"].includes(currentAction) && <input value={email} type="text" name="email" placeholder="email" className={classes.input} onChange={event => setEmail(event.target.value)} />}
-      {["signup", "login"].includes(currentAction) && <>
+      {/* Step 1 (credentials) — shown for login, password reset, and the
+          first stage of signup. Hidden during step 2 of WorldDaemons signup. */}
+      {(currentAction === "pwReset" || (currentAction === "signup" && (!wdMode || signupStep === "credentials"))) &&
+        <input value={email} type="text" name="email" placeholder="email" className={classes.input} onChange={event => setEmail(event.target.value)} />}
+      {(currentAction === "login" || (currentAction === "signup" && (!wdMode || signupStep === "credentials"))) && <>
         <input
           value={username} type="text" name="username"
           autoComplete="username"
@@ -239,21 +267,35 @@ const LoginForm = ({ startingState = "login", returnTo }: {
           onChange={event => setPassword(event.target.value)}
         />
       </>}
-      {currentAction === "signup" && wdMode && <>
+      {/* Step 2 (daemon) — only for WorldDaemons signup, shown after step 1. */}
+      {currentAction === "signup" && wdMode && signupStep === "daemon" && <>
+        <div className={classes.daemonStepHeader}>
+          Now name your daemon and pick its animal manifestation.
+        </div>
         <input
           value={daemonName} type="text" name="daemonName"
-          placeholder="your daemon's name (e.g. Stelmaria)"
+          placeholder="your daemon's name (e.g. Pantalaimon)"
           className={classes.input}
           onChange={event => setDaemonName(event.target.value)}
         />
         <input
           value={daemonSpecies} type="text" name="daemonSpecies"
-          placeholder="your daemon's animal (e.g. snow leopard)"
+          placeholder="your daemon's animal (e.g. pine marten)"
           className={classes.input}
           onChange={event => setDaemonSpecies(event.target.value)}
         />
       </>}
-      <input type="submit" className={classes.submit} value={currentActionToButtonText[currentAction]} />
+      <input
+        type="submit"
+        className={classes.submit}
+        value={
+          currentAction === "signup" && wdMode && signupStep === "credentials"
+            ? "Sign Up"
+            : currentAction === "signup" && wdMode && signupStep === "daemon"
+            ? "Enter the world"
+            : currentActionToButtonText[currentAction]
+        }
+      />
       
       {currentAction === "signup" && hasSubscribeToCuratedCheckbox &&
         <SignupSubscribeToCurated defaultValue={subscribeToCurated} onChange={(checked: boolean) => setSubscribeToCurated(checked)} />

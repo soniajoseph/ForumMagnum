@@ -1020,7 +1020,7 @@ type LoginReturnData {
 
 extend type Mutation {
   login(username: String, password: String): LoginReturnData
-  signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String): LoginReturnData
+  signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String, daemonName: String, daemonSpecies: String): LoginReturnData
   logout: LoginReturnData
   resetPassword(email: String): String
 }

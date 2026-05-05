@@ -27,6 +27,8 @@ export const UsersMinimumInfo = gql(`
     spamRiskScore
     tagRevisionCount
     reviewedByUserId
+    daemonName
+    daemonSpecies
   }
 `)
 

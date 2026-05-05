@@ -4487,6 +4487,8 @@ type MutationsetVoteTagRelArgs = {
 
 type MutationsignupArgs = {
   abTestKey?: InputMaybe<Scalars['String']['input']>;
+  daemonName?: InputMaybe<Scalars['String']['input']>;
+  daemonSpecies?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   reCaptchaToken?: InputMaybe<Scalars['String']['input']>;
@@ -21685,6 +21687,8 @@ type signupMutationVariables = Exact<{
   subscribeToCurated: InputMaybe<Scalars['Boolean']['input']>;
   reCaptchaToken: InputMaybe<Scalars['String']['input']>;
   abTestKey: InputMaybe<Scalars['String']['input']>;
+  daemonName: InputMaybe<Scalars['String']['input']>;
+  daemonSpecies: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -24072,7 +24076,7 @@ type UserRateLimitDisplay_UserRateLimit_user_User = (
 
 type UserRateLimitDisplay = { __typename?: 'UserRateLimit', _id: string, userId: string, type: UserRateLimitType, actionsPerInterval: number, intervalUnit: UserRateLimitIntervalUnit, intervalLength: number, createdAt: string, endedAt: string, user: UserRateLimitDisplay_UserRateLimit_user_User | null };
 
-type UsersMinimumInfo = { __typename?: 'User', _id: string, slug: string, createdAt: string, username: string | null, displayName: string, profileImageId: string | null, karma: number, afKarma: number, deleted: boolean, isAdmin: boolean, htmlBio: string, postCount: number, commentCount: number, sequenceCount: number, afPostCount: number, afCommentCount: number, spamRiskScore: number, tagRevisionCount: number, reviewedByUserId: string | null };
+type UsersMinimumInfo = { __typename?: 'User', _id: string, slug: string, createdAt: string, username: string | null, displayName: string, profileImageId: string | null, karma: number, afKarma: number, deleted: boolean, isAdmin: boolean, htmlBio: string, postCount: number, commentCount: number, sequenceCount: number, afPostCount: number, afCommentCount: number, spamRiskScore: number, tagRevisionCount: number, reviewedByUserId: string | null, daemonName: string | null, daemonSpecies: string | null };
 
 type UsersProfile_User_biography_Revision = (
   { __typename?: 'Revision' }

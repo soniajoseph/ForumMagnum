@@ -92,6 +92,14 @@ const styles = defineStyles('UsersProfile', (theme: ThemeType) => ({
     ...theme.typography.headerStyle,
     marginTop: 0,
   },
+  daemonLine: {
+    ...theme.typography.body2,
+    ...theme.typography.headerStyle,
+    fontStyle: 'italic',
+    color: theme.palette.greyAlpha(0.6),
+    marginTop: 4,
+    marginBottom: 8,
+  },
   deletedUserName: {
     textDecoration: "line-through",
   },
@@ -326,6 +334,11 @@ const UsersProfileFn = ({terms, slug}: {
             })}>
               {username}
             </div>
+            {user.daemonName && user.daemonSpecies && (
+              <div className={classes.daemonLine}>
+                {user.daemonName}, the {user.daemonSpecies}
+              </div>
+            )}
             {user.deleted && "(account deleted)"}
             <Typography variant="body2" className={classes.userInfo}>
               { renderMeta() }
