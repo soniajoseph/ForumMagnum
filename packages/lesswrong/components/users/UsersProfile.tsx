@@ -12,7 +12,7 @@ import PencilIcon from '@/lib/vendor/@material-ui/icons/src/Create'
 import classNames from 'classnames';
 import { useCurrentUser } from '../common/withUser';
 import {AnalyticsContext} from "../../lib/analyticsEvents";
-import { hasEventsSetting, siteNameWithArticleSetting, taglineSetting, isAF, nofollowKarmaThreshold } from '@/lib/instanceSettings';
+import { hasEventsSetting, siteNameWithArticleSetting, taglineSetting, isAF, isWorldDaemons, nofollowKarmaThreshold } from '@/lib/instanceSettings';
 import { separatorBulletStyles } from '../common/SectionFooter';
 import { getSortOrderOptions } from '../../lib/collections/posts/dropdownOptions';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -274,7 +274,11 @@ const UsersProfileFn = ({terms, slug}: {
     }
 
     // Does this profile page belong to a likely-spam account?
-    if (user.spamRiskScore < 0.4) {
+    // Skipped for WorldDaemons since soft launch is invite-only — every
+    // account is vouched-for, and the filter was hiding new accounts'
+    // profiles from anonymous visitors (their own bylines clicked through
+    // to a 404). Re-enable if/when public signup opens.
+    if (!isWorldDaemons() && user.spamRiskScore < 0.4) {
       if (currentUser?._id === user._id) {
         // Logged-in spammer can see their own profile
       } else if (currentUser && userCanDo(currentUser, 'posts.moderate.all')) {

@@ -96,6 +96,15 @@ const profilePageUnsharedStyles = defineStyles("ProfilePageUnshared", (theme: Th
       color: "inherit",
     },
   },
+  daemonLine: {
+    textAlign: "center",
+    fontFamily: theme.typography.headerStyle.fontFamily,
+    fontStyle: "italic",
+    fontSize: "1.05rem",
+    color: theme.palette.greyAlpha(0.55),
+    marginTop: 2,
+    marginBottom: 12,
+  },
   profileHeaderActions: {
     gridColumn: 3,
     justifySelf: "end",
@@ -199,6 +208,11 @@ function ProfilePageInner({user}: {
               <ProfileHeaderActions user={user} />
             </Suspense>
           </div>
+          {user.daemonName && user.daemonSpecies && (
+            <div className={classes.daemonLine}>
+              {user.daemonName}, the {user.daemonSpecies}
+            </div>
+          )}
           {!user.hideProfileTopPosts && <UserProfileTopPostsSection user={user}/>}
 
           <Suspense>
