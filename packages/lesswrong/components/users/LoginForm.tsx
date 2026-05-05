@@ -113,7 +113,10 @@ const LoginForm = ({ startingState = "login", returnTo }: {
 }) => {
   const classes = useStyles(styles);
   const hasSubscribeToCuratedCheckbox = !isEAForum() && !isAF();
-  const hasOauthSection = !isEAForum();
+  // OAuth (Google/GitHub) is upstream-only until we register callback URLs
+  // for our own domain. Showing the buttons would link out to Google's "this
+  // app isn't configured" error.
+  const hasOauthSection = !isEAForum() && !isWorldDaemons();
 
   const { pathname } = useLocation()
   const reCaptchaToken = useRef<string|null>(null);
