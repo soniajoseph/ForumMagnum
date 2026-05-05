@@ -6,6 +6,8 @@ import merge from "lodash/merge";
 import { siteNameWithArticleSetting } from "@/lib/instanceSettings";
 import RouteRoot from "@/components/layout/RouteRoot";
 import { assertRouteAttributes } from "@/lib/routeChecks/assertRouteAttributes";
+import { isWorldDaemons } from "@/lib/forumTypeUtils";
+import Error404 from "@/components/common/Error404";
 
 export async function generateMetadata(): Promise<Metadata> {
   return merge(
@@ -26,6 +28,9 @@ assertRouteAttributes("/bestoflesswrong", {
 });
 
 export default function Page() {
+  if (isWorldDaemons()) {
+    return <RouteRoot><Error404/></RouteRoot>;
+  }
   return <RouteRoot subtitle={{
     title: 'The Best of LessWrong',
     link: '/leastwrong',
