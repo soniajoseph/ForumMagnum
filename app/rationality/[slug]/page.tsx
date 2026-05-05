@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import merge from "lodash/merge";
 import RouteRoot from "@/components/layout/RouteRoot";
 import { assertRouteAttributes } from "@/lib/routeChecks/assertRouteAttributes";
+import { isWorldDaemons } from "@/lib/forumTypeUtils";
+import Error404 from "@/components/common/Error404";
 
 export async function generateMetadata(): Promise<Metadata> {
   return merge({}, await getDefaultMetadata(), getPageTitleFields('Rationality: A-Z'));
@@ -21,6 +23,9 @@ assertRouteAttributes("/rationality/[slug]", {
 export default async function Page({ params }: {
   params: Promise<{ slug: string }>
 }) {
+  if (isWorldDaemons()) {
+    return <RouteRoot><Error404/></RouteRoot>;
+  }
   const { slug } = await params;
   return <RouteRoot delayedStatusCode
     subtitle={{ title: 'Rationality: A-Z', link: '/rationality' }}

@@ -1,4 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Favicon placeholder: crescent moon with small cat silhouette inside.
+       Echoes the logo mark at favicon scale. -->
   <rect width="32" height="32" rx="6" fill="#1a1f2e"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#e6c98c">WD</text>
+  <g transform="translate(4, 4)">
+    <path fill="#e6c98c" d="M 12 0 a 12 12 0 1 0 0 24 a 9 9 0 1 1 0 -24 z"/>
+    <g fill="#1a1f2e" transform="translate(8, 8)">
+      <ellipse cx="4" cy="6" rx="3" ry="2.2"/>
+      <circle cx="6" cy="3.5" r="2"/>
+      <path d="M 5 1.6 L 5.5 0.2 L 6.1 2.2 z"/>
+      <path d="M 6.1 2.2 L 7 0.2 L 7.7 2.4 z"/>
+    </g>
+  </g>
 </svg>

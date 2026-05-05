@@ -1,5 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
-  <rect width="240" height="60" fill="#1a1f2e"/>
-  <text x="120" y="38" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#e6c98c" letter-spacing="0.5">World Daemons</text>
-  <text x="120" y="52" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#7c8a99" letter-spacing="2">PLACEHOLDER · LOGO TBD</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <!-- World Daemons placeholder logo. A small crescent moon enclosing a cat
+       silhouette, alongside the wordmark. Replace once final identity lands. -->
+  <defs>
+    <style>
+      .wd-mark { fill: #1a1f2e; }
+      .wd-mark-warm { fill: #c9a96e; }
+      .wd-text {
+        font-family: Georgia, "Iowan Old Style", serif;
+        fill: #1a1f2e;
+      }
+    </style>
+  </defs>
+
+  <!-- Mark: crescent moon with a small cat silhouette inside -->
+  <g transform="translate(12, 12)">
+    <!-- crescent moon -->
+    <path class="wd-mark" d="M 30 0 a 28 28 0 1 0 0 56 a 22 22 0 1 1 0 -56 z"/>
+    <!-- cat (sitting, looking right) -->
+    <g class="wd-mark-warm" transform="translate(20, 20)">
+      <!-- body -->
+      <ellipse cx="9" cy="14" rx="7" ry="5"/>
+      <!-- head -->
+      <circle cx="14" cy="9" r="4.5"/>
+      <!-- ears -->
+      <path d="M 11.5 5.5 L 12.8 2 L 14 6 z"/>
+      <path d="M 14 6 L 16 2.5 L 17.5 6 z"/>
+      <!-- tail curled up -->
+      <path d="M 3 14 q -3 -4 -1 -8 q 2 -3 5 -1" fill="none" stroke="#c9a96e" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Wordmark -->
+  <text class="wd-text" x="92" y="42" font-size="28" font-weight="400" letter-spacing="0.5">World Daemons</text>
+  <text class="wd-text" x="92" y="60" font-size="9" letter-spacing="3.2" fill="#7c8a99">A FORUM FOR THE NEXT WAVE</text>
 </svg>
