@@ -6681,6 +6681,7 @@ interface User {
   previousDisplayName: string | null;
   daemonName: string | null;
   daemonSpecies: string | null;
+  signupInviteCode: string | null;
   email: string | null;
   noindex: boolean;
   groups: Array<string> | null;
@@ -8427,6 +8428,7 @@ interface CreateUserDataInput {
   previousDisplayName?: string | null;
   daemonName?: string | null;
   daemonSpecies?: string | null;
+  signupInviteCode?: string | null;
   email?: string | null;
   groups?: Array<string> | null;
   theme?: any;
@@ -8588,6 +8590,7 @@ interface UpdateUserDataInput {
   previousDisplayName?: string | null;
   daemonName?: string | null;
   daemonSpecies?: string | null;
+  signupInviteCode?: string | null;
   email?: string | null;
   noindex?: boolean | null;
   groups?: Array<string> | null;

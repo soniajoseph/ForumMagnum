@@ -3664,6 +3664,7 @@ export type CreateUserDataInput = {
   showMyDialogues?: InputMaybe<Scalars['Boolean']['input']>;
   showPostAuthorCard?: InputMaybe<Scalars['Boolean']['input']>;
   showRecommendedPartners?: InputMaybe<Scalars['Boolean']['input']>;
+  signupInviteCode?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   subforumPreferredLayout?: InputMaybe<SubforumPreferredLayout>;
   theme?: InputMaybe<Scalars['JSON']['input']>;
@@ -6286,6 +6287,7 @@ export type MutationsignupArgs = {
   daemonName?: InputMaybe<Scalars['String']['input']>;
   daemonSpecies?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  inviteCode?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   reCaptchaToken?: InputMaybe<Scalars['String']['input']>;
   subscribeToCurated?: InputMaybe<Scalars['Boolean']['input']>;
@@ -12707,6 +12709,7 @@ export type UpdateUserDataInput = {
   showPostAuthorCard?: InputMaybe<Scalars['Boolean']['input']>;
   showRecommendedPartners?: InputMaybe<Scalars['Boolean']['input']>;
   signUpReCaptchaRating?: InputMaybe<Scalars['Float']['input']>;
+  signupInviteCode?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   snoozedUntilContentCount?: InputMaybe<Scalars['Float']['input']>;
   sortDraftsBy?: InputMaybe<Scalars['String']['input']>;
@@ -13027,6 +13030,7 @@ export type User = {
   showPostAuthorCard: Maybe<Scalars['Boolean']['output']>;
   showRecommendedPartners: Maybe<Scalars['Boolean']['output']>;
   signUpReCaptchaRating: Maybe<Scalars['Float']['output']>;
+  signupInviteCode: Maybe<Scalars['String']['output']>;
   slug: Scalars['String']['output'];
   smallDownvoteCount: Maybe<Scalars['Float']['output']>;
   smallDownvoteReceivedCount: Maybe<Scalars['Float']['output']>;

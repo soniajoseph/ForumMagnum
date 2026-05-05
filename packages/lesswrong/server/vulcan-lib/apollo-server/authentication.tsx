@@ -131,7 +131,7 @@ export const loginDataGraphQLTypeDefs = gql`
   }
   extend type Mutation {
     login(username: String, password: String): LoginReturnData
-    signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String, daemonName: String, daemonSpecies: String): LoginReturnData
+    signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String, daemonName: String, daemonSpecies: String, inviteCode: String): LoginReturnData
     logout: LoginReturnData
     resetPassword(email: String): String
   }
@@ -169,7 +169,7 @@ export const loginDataGraphQLMutations = {
     }
   },
   async signup(root: void, args: AnyBecauseTodo, context: ResolverContext) {
-    const { email, username, password, subscribeToCurated, reCaptchaToken, abTestKey, daemonName, daemonSpecies } = args;
+    const { email, username, password, subscribeToCurated, reCaptchaToken, abTestKey, daemonName, daemonSpecies, inviteCode } = args;
 
     if (!email || !username || !password) throw Error("Email, Username and Password are all required for signup")
     if (!SimpleSchema.RegEx.Email.test(email)) throw Error("Invalid email address")
@@ -178,12 +178,27 @@ export const loginDataGraphQLMutations = {
     const validateUsernameResponse = validateUsername(username);
     if (!validateUsernameResponse.validUsername) throw Error(validateUsernameResponse.reason)
 
-    // World Daemons: every account must arrive with a daemon (name + species).
-    // See DESIGN.md / ROADMAP.md (Phase A.3) in the world-daemons umbrella repo.
+    // World Daemons: every account must arrive with a daemon (name + species)
+    // and a valid, unused invite code. See DESIGN.md / ROADMAP.md (Phase A.3
+    // and Phase D) in the world-daemons umbrella repo.
     const { forumTypeSetting } = await import("@/lib/instanceSettings");
+    let normalizedInviteCode: string | null = null;
     if (forumTypeSetting.get() === "WorldDaemons") {
       if (!daemonName || !daemonName.trim()) throw Error("Daemon name is required");
       if (!daemonSpecies || !daemonSpecies.trim()) throw Error("Daemon species is required");
+
+      // Invite-code gate. Codes live in the WORLD_DAEMONS_INVITE_CODES env
+      // var (comma-separated). If the var is unset, *no signup is possible* —
+      // intentional fail-closed default for a public-source repo.
+      const allowedCodes = (process.env.WORLD_DAEMONS_INVITE_CODES ?? "")
+        .split(",").map(c => c.trim()).filter(Boolean);
+      const candidate = (inviteCode ?? "").trim();
+      if (!candidate) throw Error("An invite code is required.");
+      if (!allowedCodes.includes(candidate)) throw Error("That invite code isn't valid.");
+      // Single-use: reject if any existing user already has this signupInviteCode.
+      const existingUser = await context.Users.findOne({ signupInviteCode: candidate });
+      if (existingUser) throw Error("That invite code has already been used.");
+      normalizedInviteCode = candidate;
     }
 
     if (await userFindOneByEmail(email)) {
@@ -226,6 +241,7 @@ export const loginDataGraphQLMutations = {
       abTestKey,
       daemonName: daemonName?.trim() || undefined,
       daemonSpecies: daemonSpecies?.trim() || undefined,
+      signupInviteCode: normalizedInviteCode ?? undefined,
     };
 
     // If the account arrived with a daemon, the daemon's name is the byline.

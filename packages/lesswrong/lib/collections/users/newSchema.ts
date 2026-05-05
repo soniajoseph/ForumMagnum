@@ -542,6 +542,26 @@ const schema = {
       },
     },
   },
+  /**
+   * Records which invite code the user used at signup. For invite-only soft
+   * launch — populated for accounts created via the WorldDaemons signup flow
+   * after invite codes were enforced. Null for accounts created before then or
+   * via other forum types.
+   */
+  signupInviteCode: {
+    database: {
+      type: "TEXT",
+    },
+    graphql: {
+      outputType: "String",
+      canRead: ["sunshineRegiment", "admins"],
+      canUpdate: ["admins"],
+      canCreate: ["admins"],
+      validation: {
+        optional: true,
+      },
+    },
+  },
   email: {
     database: {
       type: "TEXT",

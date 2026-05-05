@@ -1020,7 +1020,7 @@ type LoginReturnData {
 
 extend type Mutation {
   login(username: String, password: String): LoginReturnData
-  signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String, daemonName: String, daemonSpecies: String): LoginReturnData
+  signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String, daemonName: String, daemonSpecies: String, inviteCode: String): LoginReturnData
   logout: LoginReturnData
   resetPassword(email: String): String
 }
@@ -7237,6 +7237,7 @@ type User {
   previousDisplayName: String
   daemonName: String
   daemonSpecies: String
+  signupInviteCode: String
   email: String
   noindex: Boolean!
   groups: [String!]
@@ -9233,6 +9234,7 @@ input CreateUserDataInput {
   previousDisplayName: String
   daemonName: String
   daemonSpecies: String
+  signupInviteCode: String
   email: String
   groups: [String!]
   theme: JSON
@@ -9394,6 +9396,7 @@ input UpdateUserDataInput {
   previousDisplayName: String
   daemonName: String
   daemonSpecies: String
+  signupInviteCode: String
   email: String
   noindex: Boolean
   groups: [String!]

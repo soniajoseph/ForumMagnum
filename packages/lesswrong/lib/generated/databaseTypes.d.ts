@@ -2149,6 +2149,7 @@ interface DbUser extends DbObject {
   showPostAuthorCard: boolean | null
   showRecommendedPartners: boolean
   signUpReCaptchaRating: number | null
+  signupInviteCode: string | null
   slug: string
   smallDownvoteCount: number | null
   smallDownvoteReceivedCount: number | null

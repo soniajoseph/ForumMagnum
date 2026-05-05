@@ -2970,6 +2970,7 @@ CREATE TABLE "Users" (
   "previousDisplayName" TEXT,
   "daemonName" TEXT,
   "daemonSpecies" TEXT,
+  "signupInviteCode" TEXT,
   "email" TEXT,
   "noindex" BOOL NOT NULL DEFAULT FALSE,
   "groups" TEXT[],

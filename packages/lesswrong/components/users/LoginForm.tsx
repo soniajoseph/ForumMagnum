@@ -122,6 +122,7 @@ const LoginForm = ({ startingState = "login", returnTo }: {
   const [email, setEmail] = useState<string>("")
   const [daemonName, setDaemonName] = useState<string>("")
   const [daemonSpecies, setDaemonSpecies] = useState<string>("")
+  const [inviteCode, setInviteCode] = useState<string>("")
   const { flash } = useMessages();
   const [currentAction, setCurrentAction] = useState<possibleActions>(startingState)
   // For World Daemons, signup is a 2-step flow:
@@ -154,8 +155,8 @@ const LoginForm = ({ startingState = "login", returnTo }: {
   `), { errorPolicy: 'all' })
 
   const [signupMutation] = useMutation(gql(`
-    mutation signup($email: String, $username: String, $password: String, $subscribeToCurated: Boolean, $reCaptchaToken: String, $abTestKey: String, $daemonName: String, $daemonSpecies: String) {
-      signup(email: $email, username: $username, password: $password, subscribeToCurated: $subscribeToCurated, reCaptchaToken: $reCaptchaToken, abTestKey: $abTestKey, daemonName: $daemonName, daemonSpecies: $daemonSpecies) {
+    mutation signup($email: String, $username: String, $password: String, $subscribeToCurated: Boolean, $reCaptchaToken: String, $abTestKey: String, $daemonName: String, $daemonSpecies: String, $inviteCode: String) {
+      signup(email: $email, username: $username, password: $password, subscribeToCurated: $subscribeToCurated, reCaptchaToken: $reCaptchaToken, abTestKey: $abTestKey, daemonName: $daemonName, daemonSpecies: $daemonSpecies, inviteCode: $inviteCode) {
         token
       }
     }
@@ -187,10 +188,14 @@ const LoginForm = ({ startingState = "login", returnTo }: {
     const signupAbTestKey = getUserABTestKey({clientId});
 
     // For World Daemons, the first signup click advances to the daemon step
-    // rather than submitting. Validate credentials inline first.
+    // rather than submitting. Validate credentials + invite code inline first.
     if (currentAction === 'signup' && wdMode && signupStep === 'credentials') {
       if (!email || !username || !password) {
         showError({message: "Email, username and password are all required."});
+        return;
+      }
+      if (!inviteCode.trim()) {
+        showError({message: "An invite code is required."});
         return;
       }
       setDisplayedError(null);
@@ -218,6 +223,7 @@ const LoginForm = ({ startingState = "login", returnTo }: {
           subscribeToCurated,
           daemonName: wdMode ? daemonName.trim() : undefined,
           daemonSpecies: wdMode ? daemonSpecies.trim() : undefined,
+          inviteCode: wdMode ? inviteCode.trim() : undefined,
         }
       })
       if (error) {
@@ -267,6 +273,15 @@ const LoginForm = ({ startingState = "login", returnTo }: {
           onChange={event => setPassword(event.target.value)}
         />
       </>}
+      {/* Invite code on credentials step for WorldDaemons signup. */}
+      {currentAction === "signup" && wdMode && signupStep === "credentials" && (
+        <input
+          value={inviteCode} type="text" name="inviteCode"
+          placeholder="invite code"
+          className={classes.input}
+          onChange={event => setInviteCode(event.target.value)}
+        />
+      )}
       {/* Step 2 (daemon) — only for WorldDaemons signup, shown after step 1. */}
       {currentAction === "signup" && wdMode && signupStep === "daemon" && <>
         <div className={classes.daemonStepHeader}>
