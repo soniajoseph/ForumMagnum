@@ -112,7 +112,9 @@ const LoginForm = ({ startingState = "login", returnTo }: {
   returnTo?: string
 }) => {
   const classes = useStyles(styles);
-  const hasSubscribeToCuratedCheckbox = !isEAForum() && !isAF();
+  // Subscribe-to-curated isn't meaningful on World Daemons (no curated feed
+  // exists yet), and on EA / AF the upstream behavior already hides it.
+  const hasSubscribeToCuratedCheckbox = !isEAForum() && !isAF() && !isWorldDaemons();
   // OAuth (Google/GitHub) is upstream-only until we register callback URLs
   // for our own domain. Showing the buttons would link out to Google's "this
   // app isn't configured" error.
