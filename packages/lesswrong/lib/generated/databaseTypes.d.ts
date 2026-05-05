@@ -1603,6 +1603,8 @@ interface DbUser extends DbObject {
   createdAt: Date
   criticismTipsDismissed: boolean
   currentFrontpageFilter: string | null
+  daemonName: string | null
+  daemonSpecies: string | null
   defaultToCKEditor: boolean | null
   deleteContent: boolean | null
   deleted: boolean

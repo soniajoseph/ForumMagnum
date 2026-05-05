@@ -6679,6 +6679,8 @@ interface User {
   hasAuth0Id: boolean | null;
   displayName: string;
   previousDisplayName: string | null;
+  daemonName: string | null;
+  daemonSpecies: string | null;
   email: string | null;
   noindex: boolean;
   groups: Array<string> | null;
@@ -8423,6 +8425,8 @@ interface CreateUserDataInput {
   isAdmin?: boolean | null;
   displayName: string;
   previousDisplayName?: string | null;
+  daemonName?: string | null;
+  daemonSpecies?: string | null;
   email?: string | null;
   groups?: Array<string> | null;
   theme?: any;
@@ -8582,6 +8586,8 @@ interface UpdateUserDataInput {
   isAdmin?: boolean | null;
   displayName?: string | null;
   previousDisplayName?: string | null;
+  daemonName?: string | null;
+  daemonSpecies?: string | null;
   email?: string | null;
   noindex?: boolean | null;
   groups?: Array<string> | null;

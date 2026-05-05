@@ -21,6 +21,7 @@ export const forumTypeSetting: { get: () => ForumTypeString } = {
 export const isLW = () => forumTypeSetting.get() === "LessWrong"
 export const isEAForum = () => forumTypeSetting.get() === "EAForum"
 export const isAF = () => forumTypeSetting.get() === "AlignmentForum"
+export const isWorldDaemons = () => forumTypeSetting.get() === "WorldDaemons"
 export const isLWorAF = () => isLW() || isAF()
 
 //Partial Type adds "undefined" erroneously to T, so we need to explicitly tell TS that it can't be undefined.

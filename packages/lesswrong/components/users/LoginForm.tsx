@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { reCaptchaSiteKeySetting, isAF, isEAForum } from '../../lib/instanceSettings';
+import { reCaptchaSiteKeySetting, isAF, isEAForum, isWorldDaemons } from '../../lib/instanceSettings';
 import { useMutation } from "@apollo/client/react";
 import { gql } from '@/lib/generated/gql-codegen';
 import { useMessages } from '../common/withMessages';
@@ -112,10 +112,13 @@ const LoginForm = ({ startingState = "login", returnTo }: {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [email, setEmail] = useState<string>("")
+  const [daemonName, setDaemonName] = useState<string>("")
+  const [daemonSpecies, setDaemonSpecies] = useState<string>("")
   const { flash } = useMessages();
   const [currentAction, setCurrentAction] = useState<possibleActions>(startingState)
   const [subscribeToCurated, setSubscribeToCurated] = useState<boolean>(hasSubscribeToCuratedCheckbox)
   const [_, setCookie] = useCookies(["loginToken"]);
+  const wdMode = isWorldDaemons();
 
   const saveLoginToken = useCallback((token: string) => {
     // The graphql request with a "login" or "signup" mutation returns a login
@@ -138,8 +141,8 @@ const LoginForm = ({ startingState = "login", returnTo }: {
   `), { errorPolicy: 'all' })
 
   const [signupMutation] = useMutation(gql(`
-    mutation signup($email: String, $username: String, $password: String, $subscribeToCurated: Boolean, $reCaptchaToken: String, $abTestKey: String) {
-      signup(email: $email, username: $username, password: $password, subscribeToCurated: $subscribeToCurated, reCaptchaToken: $reCaptchaToken, abTestKey: $abTestKey) {
+    mutation signup($email: String, $username: String, $password: String, $subscribeToCurated: Boolean, $reCaptchaToken: String, $abTestKey: String, $daemonName: String, $daemonSpecies: String) {
+      signup(email: $email, username: $username, password: $password, subscribeToCurated: $subscribeToCurated, reCaptchaToken: $reCaptchaToken, abTestKey: $abTestKey, daemonName: $daemonName, daemonSpecies: $daemonSpecies) {
         token
       }
     }
@@ -187,7 +190,9 @@ const LoginForm = ({ startingState = "login", returnTo }: {
           email, username, password,
           reCaptchaToken: reCaptchaToken.current,
           abTestKey: signupAbTestKey,
-          subscribeToCurated
+          subscribeToCurated,
+          daemonName: wdMode ? daemonName.trim() : undefined,
+          daemonSpecies: wdMode ? daemonSpecies.trim() : undefined,
         }
       })
       if (error) {
@@ -232,6 +237,20 @@ const LoginForm = ({ startingState = "login", returnTo }: {
           placeholder={(currentAction==="signup") ? "create password" : "password"}
           className={classes.input}
           onChange={event => setPassword(event.target.value)}
+        />
+      </>}
+      {currentAction === "signup" && wdMode && <>
+        <input
+          value={daemonName} type="text" name="daemonName"
+          placeholder="your daemon's name (e.g. Stelmaria)"
+          className={classes.input}
+          onChange={event => setDaemonName(event.target.value)}
+        />
+        <input
+          value={daemonSpecies} type="text" name="daemonSpecies"
+          placeholder="your daemon's animal (e.g. snow leopard)"
+          className={classes.input}
+          onChange={event => setDaemonSpecies(event.target.value)}
         />
       </>}
       <input type="submit" className={classes.submit} value={currentActionToButtonText[currentAction]} />

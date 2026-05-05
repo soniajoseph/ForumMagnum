@@ -131,7 +131,7 @@ export const loginDataGraphQLTypeDefs = gql`
   }
   extend type Mutation {
     login(username: String, password: String): LoginReturnData
-    signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String): LoginReturnData
+    signup(username: String, email: String, password: String, subscribeToCurated: Boolean, reCaptchaToken: String, abTestKey: String, daemonName: String, daemonSpecies: String): LoginReturnData
     logout: LoginReturnData
     resetPassword(email: String): String
   }
@@ -169,15 +169,23 @@ export const loginDataGraphQLMutations = {
     }
   },
   async signup(root: void, args: AnyBecauseTodo, context: ResolverContext) {
-    const { email, username, password, subscribeToCurated, reCaptchaToken, abTestKey } = args;
-    
+    const { email, username, password, subscribeToCurated, reCaptchaToken, abTestKey, daemonName, daemonSpecies } = args;
+
     if (!email || !username || !password) throw Error("Email, Username and Password are all required for signup")
     if (!SimpleSchema.RegEx.Email.test(email)) throw Error("Invalid email address")
     const validatePasswordResponse = validatePassword(password)
     if (!validatePasswordResponse.validPassword) throw Error(validatePasswordResponse.reason)
     const validateUsernameResponse = validateUsername(username);
     if (!validateUsernameResponse.validUsername) throw Error(validateUsernameResponse.reason)
-    
+
+    // World Daemons: every account must arrive with a daemon (name + species).
+    // See DESIGN.md / ROADMAP.md (Phase A.3) in the world-daemons umbrella repo.
+    const { forumTypeSetting } = await import("@/lib/instanceSettings");
+    if (forumTypeSetting.get() === "WorldDaemons") {
+      if (!daemonName || !daemonName.trim()) throw Error("Daemon name is required");
+      if (!daemonSpecies || !daemonSpecies.trim()) throw Error("Daemon species is required");
+    }
+
     if (await userFindOneByEmail(email)) {
       throw Error("Email address is already taken");
     }
@@ -216,10 +224,14 @@ export const loginDataGraphQLMutations = {
       emailSubscribedToCurated: subscribeToCurated,
       signUpReCaptchaRating: recaptchaScore,
       abTestKey,
+      daemonName: daemonName?.trim() || undefined,
+      daemonSpecies: daemonSpecies?.trim() || undefined,
     };
 
-    const displayName = createDisplayName(userData);
-    
+    // If the account arrived with a daemon, the daemon's name is the byline.
+    // Otherwise fall back to FM's username-based displayName.
+    const displayName = userData.daemonName ?? createDisplayName(userData);
+
     const user = await createUser({
       data: {
         ...userData,

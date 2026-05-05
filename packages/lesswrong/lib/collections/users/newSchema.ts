@@ -502,6 +502,46 @@ const schema = {
       },
     },
   },
+  /**
+   * The user's daemon — chosen at signup as part of the World Daemons identity flow.
+   * Public (visible on bylines and profile). Editable by the user themselves.
+   * Nullable in DB so existing users without a daemon (created before this column
+   * was added, or via legacy paths) remain valid; the signup form is what enforces
+   * presence going forward. See DESIGN.md and ROADMAP.md (Phase A.3) in the
+   * world-daemons umbrella repo.
+   */
+  daemonName: {
+    database: {
+      type: "TEXT",
+    },
+    graphql: {
+      outputType: "String",
+      canRead: ["guests"],
+      canUpdate: [userOwns, "sunshineRegiment", "admins"],
+      canCreate: ["members"],
+      validation: {
+        optional: true,
+      },
+    },
+  },
+  /**
+   * The animal manifestation of the user's daemon, e.g. "snow leopard". Open text
+   * for now; we may move to a curated species kit when illustrations land.
+   */
+  daemonSpecies: {
+    database: {
+      type: "TEXT",
+    },
+    graphql: {
+      outputType: "String",
+      canRead: ["guests"],
+      canUpdate: [userOwns, "sunshineRegiment", "admins"],
+      canCreate: ["members"],
+      validation: {
+        optional: true,
+      },
+    },
+  },
   email: {
     database: {
       type: "TEXT",

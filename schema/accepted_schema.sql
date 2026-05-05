@@ -2968,6 +2968,8 @@ CREATE TABLE "Users" (
   "services" JSONB,
   "displayName" TEXT NOT NULL,
   "previousDisplayName" TEXT,
+  "daemonName" TEXT,
+  "daemonSpecies" TEXT,
   "email" TEXT,
   "noindex" BOOL NOT NULL DEFAULT FALSE,
   "groups" TEXT[],

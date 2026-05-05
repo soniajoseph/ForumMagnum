@@ -1752,6 +1752,8 @@ type CreateUserDataInput = {
   conversationsDisabled?: InputMaybe<Scalars['Boolean']['input']>;
   criticismTipsDismissed?: InputMaybe<Scalars['Boolean']['input']>;
   currentFrontpageFilter?: InputMaybe<Scalars['String']['input']>;
+  daemonName?: InputMaybe<Scalars['String']['input']>;
+  daemonSpecies?: InputMaybe<Scalars['String']['input']>;
   deleteContent?: InputMaybe<Scalars['Boolean']['input']>;
   displayName: Scalars['String']['input'];
   draftsListShowArchived?: InputMaybe<Scalars['Boolean']['input']>;
@@ -10767,6 +10769,8 @@ type UpdateUserDataInput = {
   conversationsDisabled?: InputMaybe<Scalars['Boolean']['input']>;
   criticismTipsDismissed?: InputMaybe<Scalars['Boolean']['input']>;
   currentFrontpageFilter?: InputMaybe<Scalars['String']['input']>;
+  daemonName?: InputMaybe<Scalars['String']['input']>;
+  daemonSpecies?: InputMaybe<Scalars['String']['input']>;
   defaultToCKEditor?: InputMaybe<Scalars['Boolean']['input']>;
   deleteContent?: InputMaybe<Scalars['Boolean']['input']>;
   deleted?: InputMaybe<Scalars['Boolean']['input']>;
@@ -11039,6 +11043,8 @@ type User = {
   createdAt: Scalars['Date']['output'];
   criticismTipsDismissed?: Maybe<Scalars['Boolean']['output']>;
   currentFrontpageFilter?: Maybe<Scalars['String']['output']>;
+  daemonName?: Maybe<Scalars['String']['output']>;
+  daemonSpecies?: Maybe<Scalars['String']['output']>;
   defaultToCKEditor?: Maybe<Scalars['Boolean']['output']>;
   deleteContent?: Maybe<Scalars['Boolean']['output']>;
   deleted: Scalars['Boolean']['output'];
